@@ -1,0 +1,60 @@
+# Cada peer roda em um container (ambiente separado, IP próprio) e conversa com os outros por UDP.
+#
+#   docker compose up -d                           sobe A, B e C
+#   docker attach peer_a                           painel do A (sair sem derrubar: Ctrl+P, Ctrl+Q)
+#   docker attach peer_b / peer_c                  idem
+#
+# Entrada de um novo peer (o D já está na lista dos outros e aparece como INATIVO até subir):
+#   docker compose --profile novo up -d peerd
+#   docker attach peer_d
+#
+# Os arquivos ficam em peerX/tmp (pasta do Windows montada dentro do container).
+services:
+  peera:
+    image: python:3.12-slim
+    container_name: peer_a
+    working_dir: /app
+    volumes:
+      - ./peerA:/app
+    environment:
+      - CONFIG=config.docker.json
+    command: python -u peer.py painel
+    tty: true
+    stdin_open: true
+
+  peerb:
+    image: python:3.12-slim
+    container_name: peer_b
+    working_dir: /app
+    volumes:
+      - ./peerB:/app
+    environment:
+      - CONFIG=config.docker.json
+    command: python -u peer.py painel
+    tty: true
+    stdin_open: true
+
+  peerc:
+    image: python:3.12-slim
+    container_name: peer_c
+    working_dir: /app
+    volumes:
+      - ./peerC:/app
+    environment:
+      - CONFIG=config.docker.json
+    command: python -u peer.py painel
+    tty: true
+    stdin_open: true
+
+  peerd:
+    image: python:3.12-slim
+    container_name: peer_d
+    profiles: ["novo"]   # não sobe com "docker compose up"; só quando você pedir
+    working_dir: /app
+    volumes:
+      - ./peerD:/app
+    environment:
+      - CONFIG=config.docker.json
+    command: python -u peer.py painel
+    tty: true
+    stdin_open: true

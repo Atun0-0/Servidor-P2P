@@ -1,0 +1,23 @@
+{
+    "peer_id": "C",
+    "host": "peerc",
+    "bind": "0.0.0.0",
+    "port": 5000,
+    "peers": [
+        {
+            "id": "A",
+            "host": "peera",
+            "port": 5000
+        },
+        {
+            "id": "B",
+            "host": "peerb",
+            "port": 5000
+        },
+        {
+            "id": "D",
+            "host": "peerd",
+            "port": 5000
+        }
+    ]
+}
